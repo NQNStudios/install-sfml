@@ -15,7 +15,6 @@ const execFile = Util.promisify(ChildProcess.execFile);
 const Linux = "Linux", Mac = "macOS", Windows = "Windows";
 
 const sysPlatform = process.env["INSTALL_SFML_PLATFORM"] || process.platform;
-const brewPrefix = process.env["BREW_PREFIX"].split(" ") || [];
 const platform = {"linux": Linux, "darwin": Mac, "win32": Windows}[sysPlatform] || sysPlatform;
 
 let sudo = function (command) {
@@ -143,7 +142,7 @@ async function installSfmlBrewDeps({sfml}) {
 async function installBrewPackages(packages) {
     Core.info("Installing packages");
     Core.exportVariable("HOMEBREW_NO_INSTALL_CLEANUP", "1");
-    const {stdout} = await subprocess(brewPrefix.concat(["brew", "install"]).concat(packages));
+    const {stdout} = await subprocess(["brew", "install"].concat(packages));
     Core.startGroup("Finished installing packages");
     Core.info(stdout);
     Core.endGroup();
