@@ -6,7 +6,7 @@ basic_cmake() {
     (cd $dir/build && make && make install)
 }
 
-basic_cmake freetype
 basic_cmake ogg
 basic_cmake vorbis
 basic_cmake flac
+basic_cmake freetype
