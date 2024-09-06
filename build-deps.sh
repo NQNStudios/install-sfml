@@ -2,7 +2,7 @@
 
 basic_cmake() {
     dir=$1
-    cmake -DCMAKE_INSTALL_PREFIX=./ -S $dir -B $dir/build
+    cmake DINSTALL_MANPAGES=OFF -DCMAKE_INSTALL_PREFIX=./ -S $dir -B $dir/build
     (cd $dir/build && make && make install)
 }
 
