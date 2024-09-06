@@ -1,7 +1,5 @@
 #! /bin/bash
 
-git submodule update --init
-
 basic_cmake() {
     dir=$1
     cmake -DCMAKE_INSTALL_PREFIX=./ -S $dir -B $dir/build
