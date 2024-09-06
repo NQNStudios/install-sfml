@@ -186,9 +186,7 @@ async function installSfmlFromSource({sfml, config}) {
         if (platform !== Windows) {
             command.push(`-DCMAKE_BUILD_TYPE=${config}`);
         }
-        if (platform === Linux) {
-            command.push("-DCMAKE_INSTALL_PREFIX=/usr");
-        }
+        command.push("-DCMAKE_INSTALL_PREFIX=" + process.cwd());
         const {stdout} = await subprocess(command, {cwd: path});
         Core.startGroup("Finished configuring SFML");
         Core.info(stdout);
@@ -211,18 +209,7 @@ async function installSfmlFromSource({sfml, config}) {
         Core.info(stdout);
         Core.endGroup();
     }
-    if (platform === Windows) {
-        const base = "C:\\Program Files (x86)\\SFML";
-        addPath("INCLUDE", Path.join(base, "include"));
-        addPath("LIB", Path.join(base, "lib"));
-        addPath("PATH", Path.join(base, "bin"));
-        Core.setOutput("path", base);
-    } else if (platform === Linux) {
-        Core.setOutput("path", "/usr");
-    } else {
-        Core.setOutput("path", "/usr/local");
-    }
-
+    Core.setOutput("path", process.cwd());
     if (restored !== cacheKey) {
         Core.info(`Saving cache: '${cacheKey}'`);
         try {
