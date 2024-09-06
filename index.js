@@ -10,6 +10,10 @@ import ToolCache from "@actions/tool-cache";
 import Util from "util";
 import {cmpTags} from "tag-cmp";
 
+// Polyfill __dirname:
+import { fileURLToPath } from 'url';
+const __dirname = Path.dirname(fileURLToPath(import.meta.url));
+
 const execFile = Util.promisify(ChildProcess.execFile);
 
 const Linux = "Linux", Mac = "macOS", Windows = "Windows";
