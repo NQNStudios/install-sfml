@@ -92,7 +92,7 @@ async function installSfmlApt() {
 async function installSfmlAptDeps({sfml}) {
     checkVersion("SFML", sfml, [NumericVersion]);
     const packages = [
-        "libxrandr-dev", "libudev-dev", "libopenal-dev", "libflac-dev", "libvorbis-dev",
+        "libxrandr-dev", "libudev-dev", "libopenal-dev",
         "libgl1-mesa-dev", "libegl1-mesa-dev",
     ];
     if (cmpTags(sfml, "2.6") >= 0) {
@@ -130,15 +130,6 @@ async function installSfmlBrew() {
     Core.setOutput("path", path);
 }
 
-async function installSfmlBrewDeps({sfml}) {
-    checkVersion("SFML", sfml, [NumericVersion]);
-    const packages = ["flac", "freetype", "libogg", "libvorbis"];
-    if (cmpTags(sfml, "2.5") < 0) {
-        packages.push("jpeg");
-    }
-    return installBrewPackages(packages.sort());
-}
-
 async function installBrewPackages(packages) {
     Core.info("Installing packages");
     Core.exportVariable("HOMEBREW_NO_INSTALL_CLEANUP", "1");
@@ -154,8 +145,6 @@ async function installSfmlFromSource({sfml, config}) {
     let depsFunc = async () => {};
     if (platform === Linux) {
         depsFunc = installSfmlAptDeps;
-    } else if (platform === Mac) {
-        depsFunc = installSfmlBrewDeps;
     }
     const depsTask = depsFunc({sfml: (sfml === Nightly || sfml === Latest) ? "2.6.0" : sfml});
 
@@ -180,6 +169,10 @@ async function installSfmlFromSource({sfml, config}) {
     } catch (error) {}
 
     await depsTask;
+    if (platform !== Windows) {
+        await subprocess("build-deps.sh");
+    }
+
     {
         const command = ["cmake", ".", "-DBUILD_SHARED_LIBS=ON"];
         if (platform !== Windows) {
