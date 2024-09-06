@@ -170,7 +170,7 @@ async function installSfmlFromSource({sfml, config}) {
 
     await depsTask;
     if (platform !== Windows) {
-        await subprocess("build-deps.sh");
+        await subprocess(["build-deps.sh"]);
     }
 
     {
