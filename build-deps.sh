@@ -11,11 +11,18 @@ basic_cmake() {
 }
 
 basic_cmake ogg
-cp -r Ogg.framework lib/
+if [ "$(uname)" = "Darwin" ]; then
+    cp -r Ogg.framework lib/
+else
+    ls
+    ls lib
+fi
 
 basic_cmake vorbis "-DBUILD_TESTING=0 -DOGG_ROOT=$(pwd)"
 
-cp -r vorbis/build/lib/Vorbis.framework lib/
+if [ "$(uname)" = "Darwin" ]; then
+    cp -r vorbis/build/lib/Vorbis.framework lib/
+fi
 
 basic_cmake flac "-DOGG_ROOT=$(pwd)"
 
@@ -25,4 +32,7 @@ if [ "$(uname)" = "Darwin" ]; then
 fi
 
 basic_cmake freetype $flags
-cp -r Library/Frameworks/freetype.framework lib/
+
+if [ "$(uname)" = "Darwin" ]; then
+    cp -r Library/Frameworks/freetype.framework lib/
+fi
