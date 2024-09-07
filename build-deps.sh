@@ -41,5 +41,5 @@ fi
 basic_cmake freetype "$flags" "$xcode"
 
 if [ "$(uname)" = "Darwin" ]; then
-    cp -r Library/Frameworks/freetype.framework lib/
+    cp -r freetype/build/Release/freetype.framework lib/
 fi
