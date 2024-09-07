@@ -7,7 +7,7 @@ basic_cmake() {
     ARCH=$(uname -m)
 
     cmake $extra -DBUILD_FRAMEWORK=1 -DCMAKE_OSX_ARCHITECTURES="$ARCH" -DINSTALL_MANPAGES=OFF -DCMAKE_INSTALL_PREFIX=./ -S $dir -B $dir/build
-    (cd $dir/build && (xcodebuild -arch "$ARCH" -configuration "$CONFIGURATION" || make) && make install) || exit 1
+    (cd $dir/build && (xcodebuild -arch "$ARCH" -configuration "$CONFIGURATION" || make && make install)) || exit 1
 }
 
 basic_cmake ogg
