@@ -9,6 +9,9 @@ include(GNUInstallDirs)
 include(CheckIncludeFiles)
 include(CheckLibraryExists)
 
+include_directories("include")
+include_directories("lib")
+
 # Build options
 option(BUILD_SHARED_LIBS "Build shared library" OFF)
 if(APPLE)
