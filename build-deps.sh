@@ -9,8 +9,6 @@ basic_cmake() {
     extra=$2
     xcode=$3
 
-    ARCH=$(uname -m)
-
     cmake $extra -DBUILD_FRAMEWORK=1 -DCMAKE_OSX_ARCHITECTURES="$ARCH" -DINSTALL_MANPAGES=OFF -DCMAKE_INSTALL_PREFIX=./ -S $dir -B $dir/build
     if [ -z "$xcode" ]; then
         (cd $dir/build && make && make install) || exit 1
