@@ -3,11 +3,16 @@
 basic_cmake() {
     dir=$1
     extra=$2
+    xcode=$3
 
     ARCH=$(uname -m)
 
     cmake $extra -DBUILD_FRAMEWORK=1 -DCMAKE_OSX_ARCHITECTURES="$ARCH" -DINSTALL_MANPAGES=OFF -DCMAKE_INSTALL_PREFIX=./ -S $dir -B $dir/build
-    (cd $dir/build && (xcodebuild -arch "$ARCH" -configuration "$CONFIGURATION" || make && make install)) || exit 1
+    if [ -z "$xcode" ]; then
+        (cd $dir/build && make && make install) || exit 1
+    else
+        (cd $dir/build && xcodebuild -arch "$ARCH" -configuration "Release")
+    fi
 }
 
 basic_cmake ogg
@@ -27,11 +32,13 @@ fi
 basic_cmake flac "-DOGG_ROOT=$(pwd)"
 
 flags=""
+xcode=""
 if [ "$(uname)" = "Darwin" ]; then
     flags="-GXcode -DCMAKE_GENERATOR=Xcode"
+    xcode="true"
 fi
 
-basic_cmake freetype $flags
+basic_cmake freetype "$flags" "$xcode"
 
 if [ "$(uname)" = "Darwin" ]; then
     cp -r Library/Frameworks/freetype.framework lib/
