@@ -183,6 +183,8 @@ async function installSfmlFromSource({sfml, config}) {
             command.push(`-DCMAKE_BUILD_TYPE=${config}`);
         }
         command.push("-DCMAKE_INSTALL_PREFIX=" + process.cwd());
+        command.push("-DCMAKE_LIBRARY_PATH=" + Path.join(process.cwd(), 'lib'));
+        command.push("-DCMAKE_PREFIX_PATH=" + Path.join(process.cwd(), 'include'));
         const {stdout} = await subprocess(command, {cwd: path});
         Core.startGroup("Finished configuring SFML");
         Core.info(stdout);
