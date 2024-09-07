@@ -1,5 +1,9 @@
 #! /bin/bash
 
+if [ -z "$CONFIGURATION" ]; then
+    CONFIGURATION=Release
+fi
+
 basic_cmake() {
     dir=$1
     extra=$2
@@ -11,7 +15,7 @@ basic_cmake() {
     if [ -z "$xcode" ]; then
         (cd $dir/build && make && make install) || exit 1
     else
-        (cd $dir/build && xcodebuild -arch "$ARCH" -configuration "Release")
+        (cd $dir/build && xcodebuild -arch "$ARCH" -configuration "$CONFIGURATION")
     fi
 }
 
