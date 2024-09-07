@@ -4,6 +4,8 @@ if [ -z "$CONFIGURATION" ]; then
     CONFIGURATION=Release
 fi
 
+ARCH="$1"
+
 basic_cmake() {
     dir=$1
     extra=$2

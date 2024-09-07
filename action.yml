@@ -10,6 +10,9 @@ inputs:
   token:
     description: Personal access token (auto-populated)
     default: ${{ github.token }}
+  arch:
+    description: MacOS Architecture flag
+    default: ''
 outputs:
   sfml:
     description: The actual version of SFML that was installed
