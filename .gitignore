@@ -3,3 +3,9 @@ node_modules/
 /sfml-project/*
 !/sfml-project/*.cpp
 !/sfml-project/CMakeLists*.txt
+.DS_Store
+include/
+lib/
+bin/
+share/
+*.framework
