@@ -112,20 +112,13 @@ async function installAptPackages(packages) {
     Core.info("Installing packages");
     try {
         await subprocess(sudo(["apt-get", "update"]));
-    } catch (error) {
-        Core.info("apt-get update failed!");
-    }
-
-    try {
-        const {stdout} = await subprocess(sudo([
-            "apt-get", "install", "-qy", "--no-install-recommends", "--no-upgrade", "--",
-        ].concat(packages)));
-        Core.startGroup("Finished installing packages");
-        Core.info(stdout);
-        Core.endGroup();
-    } catch (error) {
-        Core.info("apt-get install packages failed! " + error.toString());
-    }
+    } catch (error) {}
+    const {stdout} = await subprocess(sudo([
+        "apt-get", "install", "-qy", "--no-install-recommends", "--no-upgrade", "--",
+    ].concat(packages)));
+    Core.startGroup("Finished installing packages");
+    Core.info(stdout);
+    Core.endGroup();
 }
 
 async function installSfmlBrew() {
