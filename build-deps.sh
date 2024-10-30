@@ -63,6 +63,8 @@ if [ "$(uname)" = "Darwin" ]; then
     cp -a freetype/build/$CONFIGURATION/freetype.framework lib/
 fi
 
+cp lib/cmake/* "$2/cmake/"
+
 if [ -n "$failures" ]; then
     echo "Building SFML dependencies failed:\n${failures}"
 fi
