@@ -24,6 +24,11 @@ basic_cmake() {
         SHARED_LIBS="-DBUILD_SHARED_LIBS=ON"
     fi
 
+    INSTALL_RPATH=""
+    if [ "$(uname)" = "Linux" ]; then
+        INSTALL_RPATH="-DCMAKE_INSTALL_RPATH=./"
+    fi
+
     if [ "$INSTALL_PREFIX" != "default" ]; then
         INSTALL_PREFIX="-DCMAKE_INSTALL_PREFIX=$(pwd)"
     else
@@ -32,7 +37,7 @@ basic_cmake() {
     echo "calling cmake $dir"
 
     full_dir=$(dirname "${BASH_SOURCE[0]}")/$dir
-    command="cmake $SHARED_LIBS $extra $OSX_ARGS -DINSTALL_MANPAGES=OFF $INSTALL_PREFIX -S $full_dir -B $full_dir/build"
+    command="cmake $INSTALL_RPATH $SHARED_LIBS $extra $OSX_ARGS -DINSTALL_MANPAGES=OFF $INSTALL_PREFIX -S $full_dir -B $full_dir/build"
     echo $command
     $command || (cat $full_dir/build/CMakeFiles/CMakeError.log && fail "cmake $full_dir")
 
