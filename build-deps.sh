@@ -28,16 +28,17 @@ basic_cmake() {
     fi
     echo "calling cmake $dir"
 
-    command="cmake -DBUILD_SHARED_LIBS=ON $extra $OSX_ARGS -DINSTALL_MANPAGES=OFF $INSTALL_PREFIX -S $dir -B $dir/build"
+    full_dir=$(dirname "${BASH_SOURCE[0]}")/$dir
+    command="cmake -DBUILD_SHARED_LIBS=ON $extra $OSX_ARGS -DINSTALL_MANPAGES=OFF $INSTALL_PREFIX -S $full_dir -B $full_dir/build"
     echo $command
-    $command || fail "cmake $dir"
+    $command || fail "cmake $full_dir"
 
     echo "building $dir"
     if [ -z "$xcode" ]; then
-        (cd $dir/build && make) || fail "make $dir"
-        (cd $dir/build && $SUDO make install) || fail "make install $dir"
+        (cd $full_dir/build && make) || fail "make $full_dir"
+        (cd $full_dir/build && $SUDO make install) || fail "make install $full_dir"
     else
-        (cd $dir/build && xcodebuild -arch "$ARCH" -configuration "$CONFIGURATION") || fail "xcodebuild $dir"
+        (cd $full_dir/build && xcodebuild -arch "$ARCH" -configuration "$CONFIGURATION") || fail "xcodebuild $dir"
     fi
 }
 
