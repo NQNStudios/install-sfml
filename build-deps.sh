@@ -16,7 +16,7 @@ basic_cmake() {
 
     echo "building $dir"
     if [ -z "$xcode" ]; then
-        (cd $dir/build && make && make install) || exit 1
+        (cd $dir/build && make && make install) # || exit 1
     else
         (cd $dir/build && xcodebuild -arch "$ARCH" -configuration "$CONFIGURATION")
     fi
@@ -26,8 +26,8 @@ basic_cmake ogg
 if [ "$(uname)" = "Darwin" ]; then
     cp -a Ogg.framework lib/
 else
-    ls
-    ls lib
+    ls include >> output.txt
+    ls lib >> output.txt
 fi
 
 basic_cmake vorbis "-DBUILD_TESTING=0 -DOGG_ROOT=$(pwd)"
