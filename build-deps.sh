@@ -22,11 +22,13 @@ basic_cmake() {
     fi
 
     if [ "$INSTALL_PREFIX" != "default" ]; then
-        INSTALL_PREFIX=./
+        INSTALL_PREFIX="-DCMAKE_INSTALL_PREFIX=./"
+    else
+        INSTALL_PREFIX=""
     fi
     echo "calling cmake $dir"
 
-    cmake $extra $OSX_ARGS -DINSTALL_MANPAGES=OFF -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX -S $dir -B $dir/build || fail "cmake $dir"
+    cmake $extra $OSX_ARGS -DINSTALL_MANPAGES=OFF $INSTALL_PREFIX -S $dir -B $dir/build || fail "cmake $dir"
 
     echo "building $dir"
     if [ -z "$xcode" ]; then
@@ -35,8 +37,6 @@ basic_cmake() {
     else
         (cd $dir/build && xcodebuild -arch "$ARCH" -configuration "$CONFIGURATION") || fail "xcodebuild $dir"
     fi
-
-    INSTALL_PREFIX=""
 }
 
 basic_cmake ogg
