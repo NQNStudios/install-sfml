@@ -187,7 +187,7 @@ async function installSfmlFromSource({sfml, config}) {
         if (platform !== Windows) {
             command.push(`-DCMAKE_BUILD_TYPE=${config}`);
         }
-        command.push("-DOGG_ROOT=" + process.cwd());
+        command.push("-DFREETYPE_DIR=" + process.cwd());
         command.push("-DCMAKE_INSTALL_PREFIX=" + process.cwd());
         command.push("-DCMAKE_LIBRARY_PATH=" + Path.join(process.cwd(), 'lib'));
         command.push("-DCMAKE_PREFIX_PATH=" + Path.join(process.cwd(), 'include'));
