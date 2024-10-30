@@ -80,8 +80,8 @@ async function subprocess(command, options) {
         if (error) {
             throw error;
         }
-        console.log(stdout);
-        console.log(stderr);
+        Core.info(stdout);
+        Core.info(stderr);
     });
 }
 
