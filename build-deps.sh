@@ -22,7 +22,7 @@ basic_cmake() {
     fi
 
     if [ "$INSTALL_PREFIX" != "default" ]; then
-        INSTALL_PREFIX="-DCMAKE_INSTALL_PREFIX=./"
+        INSTALL_PREFIX="-DCMAKE_INSTALL_PREFIX=$(pwd)"
     else
         INSTALL_PREFIX=""
     fi
