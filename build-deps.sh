@@ -21,17 +21,22 @@ basic_cmake() {
         OSX_ARGS="-DBUILD_FRAMEWORK=1 -DCMAKE_OSX_ARCHITECTURES=\"$ARCH\""
     fi
 
+    if [ "$INSTALL_PREFIX" != "default" ]; then
+        INSTALL_PREFIX=./
+    fi
     echo "calling cmake $dir"
 
-    cmake $extra $OSX_ARGS -DINSTALL_MANPAGES=OFF -DCMAKE_INSTALL_PREFIX=./ -S $dir -B $dir/build || fail "cmake $dir"
+    cmake $extra $OSX_ARGS -DINSTALL_MANPAGES=OFF -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX -S $dir -B $dir/build || fail "cmake $dir"
 
     echo "building $dir"
     if [ -z "$xcode" ]; then
         (cd $dir/build && make) || fail "make $dir"
-        (cd $dir/build && make install) || fail "make install $dir"
+        (cd $dir/build && $SUDO make install) || fail "make install $dir"
     else
         (cd $dir/build && xcodebuild -arch "$ARCH" -configuration "$CONFIGURATION") || fail "xcodebuild $dir"
     fi
+
+    INSTALL_PREFIX=""
 }
 
 basic_cmake ogg
@@ -43,6 +48,10 @@ else
 fi
 
 basic_cmake vorbis "-DBUILD_TESTING=0 -DOGG_ROOT=$(pwd)"
+# This is ridiculous, but you can't set VORBIS_ROOT so I have to build and install it twice, once
+# to the system folders
+rm -rf vorbis/build
+SUDO=sudo INSTALL_PREFIX=default basic_cmake vorbis "-DBUILD_TESTING=0 -DOGG_ROOT=$(pwd)"
 
 if [ "$(uname)" = "Darwin" ]; then
     cp -a vorbis/build/lib/Vorbis.framework lib/
