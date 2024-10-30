@@ -17,8 +17,11 @@ basic_cmake() {
     xcode="$3"
 
     OSX_ARGS=""
+    SHARED_LIBS=""
     if [ "$(uname)" = "Darwin" ]; then
         OSX_ARGS="-DBUILD_FRAMEWORK=1 -DCMAKE_OSX_ARCHITECTURES=\"$ARCH\""
+    else
+        SHARED_LIBS="-DBUILD_SHARED_LIBS=ON"
     fi
 
     if [ "$INSTALL_PREFIX" != "default" ]; then
@@ -29,7 +32,7 @@ basic_cmake() {
     echo "calling cmake $dir"
 
     full_dir=$(dirname "${BASH_SOURCE[0]}")/$dir
-    command="cmake -DBUILD_SHARED_LIBS=ON $extra $OSX_ARGS -DINSTALL_MANPAGES=OFF $INSTALL_PREFIX -S $full_dir -B $full_dir/build"
+    command="cmake $SHARED_LIBS $extra $OSX_ARGS -DINSTALL_MANPAGES=OFF $INSTALL_PREFIX -S $full_dir -B $full_dir/build"
     echo $command
     $command || fail "cmake $full_dir"
 
