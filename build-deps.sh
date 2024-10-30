@@ -28,7 +28,9 @@ basic_cmake() {
     fi
     echo "calling cmake $dir"
 
-    cmake -DBUILD_SHARED_LIBS=ON $extra $OSX_ARGS -DINSTALL_MANPAGES=OFF $INSTALL_PREFIX -S $dir -B $dir/build || fail "cmake $dir"
+    command="cmake -DBUILD_SHARED_LIBS=ON $extra $OSX_ARGS -DINSTALL_MANPAGES=OFF $INSTALL_PREFIX -S $dir -B $dir/build"
+    echo $command
+    $command || fail "cmake $dir"
 
     echo "building $dir"
     if [ -z "$xcode" ]; then
