@@ -26,8 +26,8 @@ basic_cmake ogg
 if [ "$(uname)" = "Darwin" ]; then
     cp -a Ogg.framework lib/
 else
-    ls include >> output.txt
-    ls lib >> output.txt
+    ls include
+    ls lib
 fi
 
 basic_cmake vorbis "-DBUILD_TESTING=0 -DOGG_ROOT=$(pwd)"
