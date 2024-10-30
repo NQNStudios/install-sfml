@@ -42,13 +42,14 @@ basic_cmake() {
 basic_cmake ogg
 if [ "$(uname)" = "Darwin" ]; then
     cp -a Ogg.framework lib/
-else
-    ls include
-    ls lib
 fi
+# This is ridiculous, but SFML's findVorbis.cmake is trash so I also install ogg to system folders
+# to the system folders
+rm -rf ogg/build
+SUDO=sudo INSTALL_PREFIX=default basic_cmake ogg
 
 basic_cmake vorbis "-DBUILD_TESTING=0 -DOGG_ROOT=$(pwd)"
-# This is ridiculous, but you can't set VORBIS_ROOT so I have to build and install it twice, once
+# This is ridiculous, but SFML's findVorbis.cmake is trash so I also install vorbis to system folders
 # to the system folders
 rm -rf vorbis/build
 SUDO=sudo INSTALL_PREFIX=default basic_cmake vorbis "-DBUILD_TESTING=0 -DOGG_ROOT=$(pwd)"
