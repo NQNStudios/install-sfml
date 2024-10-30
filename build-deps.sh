@@ -59,6 +59,9 @@ if [ "$(uname)" = "Darwin" ]; then
 fi
 
 basic_cmake flac "-DOGG_ROOT=$(pwd)"
+# Again, ridiculous double build required
+rm -rf flac/build
+SUDO=sudo INSTALL_PREFIX=default basic_cmake flac "-DOGG_ROOT=$(pwd)"
 
 flags=""
 xcode=""
