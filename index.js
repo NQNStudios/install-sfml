@@ -175,7 +175,7 @@ async function installSfmlFromSource({sfml, config}) {
     await depsTask;
     if (platform !== Windows) {
         try {
-            const {stdout} = await subprocess(["bash", Path.join(__dirname, "build-deps.sh"), Core.getInput("arch"), path], {cwd: __dirname});
+            const {stdout} = await subprocess(["bash", Path.join(__dirname, "build-deps.sh"), Core.getInput("arch"), path], {cwd: process.cwd()});
             Core.info(stdout);
         } catch (error) {
             Core.info("build-deps.sh failed: " + error.toString());
