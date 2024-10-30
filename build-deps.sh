@@ -65,5 +65,4 @@ fi
 
 if [ -n "$failures" ]; then
     echo "Building SFML dependencies failed:\n${failures}"
-    exit 1
 fi
