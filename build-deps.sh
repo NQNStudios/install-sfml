@@ -19,6 +19,7 @@ basic_cmake() {
     OSX_ARGS=""
     if [ "$(uname)" = "Darwin" ]; then
         OSX_ARGS="-DBUILD_FRAMEWORK=1 -DCMAKE_OSX_ARCHITECTURES=\"$ARCH\""
+    fi
 
     echo "calling cmake $dir"
 
