@@ -76,13 +76,7 @@ function checkVersion(what, version, allowed) {
 async function subprocess(command, options) {
     Core.info("[command]" + command.join(" "));
     const [file, ...args] = command;
-    return execFile(file, args, options, (error, stdout, stderr) => {
-        if (error) {
-            throw error;
-        }
-        Core.info(stdout);
-        Core.info(stderr);
-    });
+    return execFile(file, args, options);
 }
 
 function addPath(key, ...items) {
