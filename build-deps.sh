@@ -12,12 +12,17 @@ fail() {
 }
 
 basic_cmake() {
-    dir=$1
-    extra=$2
-    xcode=$3
+    dir="$1"
+    extra="$2"
+    xcode="$3"
+
+    OSX_ARGS=""
+    if [ "$(uname)" = "Darwin" ]; then
+        OSX_ARGS="-DBUILD_FRAMEWORK=1 -DCMAKE_OSX_ARCHITECTURES=\"$ARCH\""
 
     echo "calling cmake $dir"
-    cmake $extra -DBUILD_FRAMEWORK=1 -DCMAKE_OSX_ARCHITECTURES="$ARCH" -DINSTALL_MANPAGES=OFF -DCMAKE_INSTALL_PREFIX=./ -S $dir -B $dir/build || fail "cmake $dir"
+
+    cmake $extra $OSX_ARGS -DINSTALL_MANPAGES=OFF -DCMAKE_INSTALL_PREFIX=./ -S $dir -B $dir/build || fail "cmake $dir"
 
     echo "building $dir"
     if [ -z "$xcode" ]; then
