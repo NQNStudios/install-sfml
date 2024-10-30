@@ -173,7 +173,7 @@ async function installSfmlFromSource({sfml, config}) {
     } catch (error) {}
 
     await depsTask;
-    if (platform !== Windows) {
+    if (platform === Linux) {
         try {
             const {stdout} = await subprocess(["bash", Path.join(__dirname, "build-deps.sh"), Core.getInput("arch"), path], {cwd: process.cwd()});
             Core.info(stdout);
