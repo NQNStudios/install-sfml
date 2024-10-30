@@ -6,19 +6,25 @@ fi
 
 ARCH="$1"
 
+failures=""
+fail() {
+    failures="${failures}${1}\n"
+}
+
 basic_cmake() {
     dir=$1
     extra=$2
     xcode=$3
 
     echo "calling cmake $dir"
-    cmake $extra -DBUILD_FRAMEWORK=1 -DCMAKE_OSX_ARCHITECTURES="$ARCH" -DINSTALL_MANPAGES=OFF -DCMAKE_INSTALL_PREFIX=./ -S $dir -B $dir/build
+    cmake $extra -DBUILD_FRAMEWORK=1 -DCMAKE_OSX_ARCHITECTURES="$ARCH" -DINSTALL_MANPAGES=OFF -DCMAKE_INSTALL_PREFIX=./ -S $dir -B $dir/build || fail "cmake $dir"
 
     echo "building $dir"
     if [ -z "$xcode" ]; then
-        (cd $dir/build && make && make install) # || exit 1
+        (cd $dir/build && make) || fail "make $dir"
+        (cd $dir/build && make install) || fail "make install $dir"
     else
-        (cd $dir/build && xcodebuild -arch "$ARCH" -configuration "$CONFIGURATION")
+        (cd $dir/build && xcodebuild -arch "$ARCH" -configuration "$CONFIGURATION") || fail "xcodebuild $dir"
     fi
 }
 
@@ -49,4 +55,9 @@ basic_cmake freetype "$flags" "$xcode"
 
 if [ "$(uname)" = "Darwin" ]; then
     cp -a freetype/build/$CONFIGURATION/freetype.framework lib/
+fi
+
+if [ -n "$failures" ]; then
+    echo "Building SFML dependencies failed:\n${failures}"
+    exit 1
 fi
