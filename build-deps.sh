@@ -34,7 +34,7 @@ basic_cmake() {
     full_dir=$(dirname "${BASH_SOURCE[0]}")/$dir
     command="cmake $SHARED_LIBS $extra $OSX_ARGS -DINSTALL_MANPAGES=OFF $INSTALL_PREFIX -S $full_dir -B $full_dir/build"
     echo $command
-    $command || fail "cmake $full_dir"
+    $command || (cat $full_dir/CMakeFiles/CMakeError.log && fail "cmake $full_dir")
 
     echo "building $dir"
     if [ -z "$xcode" ]; then
